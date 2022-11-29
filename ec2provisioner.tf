@@ -1,5 +1,6 @@
 resource "null_resource" "copy_ec2_key" {
     depends_on = [module.ec2-instance]
+  
 
     connection {
       host = module.ec2-instance.public_ip
@@ -16,17 +17,18 @@ resource "null_resource" "copy_ec2_key" {
       destination = "/tmp/terraform.pem"
     }
 
-    # Remote Provisioner
+#     # Remote Provisioner
 
-    provisioner "remote-exec" {
-      inline = [
-        "sudo apt-get update",
-        "sudo apt-get upgrade -y",
-        "sudo apt-get install apache2 -y",
-      ]
+#     provisioner "remote-exec" {
+#       inline = [
+#         "sudo apt-get update",
+#         "sudo apt-get upgrade -y",
+#         "sudo apt-get install nginx -y",
+#         "sudo apt-get install php7.4 php7.4-fpm -y"
+#       ]
 
       
-    }
+#     }
     
   
 }

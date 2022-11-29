@@ -13,19 +13,34 @@ module "alb" {
 
   target_groups = [
     {
-      backend_protocol = "HTTP"
-      backend_port     = 80
-      target_type      = "instance"
+      name_prefix          = "app"
+      backend_protocol     = "HTTP"
+      backend_port         = 80
+      target_type          = "instance"
+      deregistration_delay = 10
+      health_check = {
+        enabled             = true
+        interval            = 30
+        path                = "/"
+        port                = "traffic-port"
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+        timeout             = 6
+        protocol            = "HTTP"
+        matcher             = "200-399"
+      }
+      protocol_version = "HTTP1"
       targets = {
-        my_target = {
-          target_id = module.ec2-instance.id
+        my_app1 = {
+          target_id = module.ec2-private["one"].id
+          port      = 80
+        },
+        my_app2 = {
+          target_id = module.ec2-private["two"].id
           port = 80
         }
-        # my_other_target = {
-        #   target_id = "i-a1b2c3d4e5f6g7h8i"
-        #   port = 8080
-        # }
       }
+      tags = local.common_tags
     }
   ]
 

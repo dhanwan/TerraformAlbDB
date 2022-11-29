@@ -16,9 +16,6 @@ module "sg_http" {
    ]
 
 
-
-
-
   # Egress rules
   egress_rules = ["all-all"]
 

@@ -11,3 +11,9 @@ variable "ec2_user" {
     default = "ubuntu"
   
 }
+
+variable "instance_count" {
+    type = number
+    default = 2
+  
+}
