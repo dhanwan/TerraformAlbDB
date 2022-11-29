@@ -4,7 +4,7 @@ module "alb" {
 
   name = "${local.name}-alb"
 
-  load_balancer_type = "application"
+  load_balancer_type = var.load_balancer_type 
 
   vpc_id             = data.terraform_remote_state.vpc.outputs.vpc
   subnets            = data.terraform_remote_state.vpc.outputs.public_subnets_ids
@@ -13,15 +13,15 @@ module "alb" {
 
   target_groups = [
     {
-      name_prefix          = "app"
+      name_prefix          = var.tg_name_prefix
       backend_protocol     = "HTTP"
       backend_port         = 80
       target_type          = "instance"
       deregistration_delay = 10
       health_check = {
-        enabled             = true
+        enabled             = var.health_check_enabled
         interval            = 30
-        path                = "/"
+        path                = var.health_check_path
         port                = "traffic-port"
         healthy_threshold   = 3
         unhealthy_threshold = 3

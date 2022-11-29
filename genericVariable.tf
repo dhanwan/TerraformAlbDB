@@ -12,3 +12,9 @@ variable "env" {
     default = "dev"
   
 }
+
+variable "domain_name" {
+    default = "mynewzone.co"
+  
+}
+

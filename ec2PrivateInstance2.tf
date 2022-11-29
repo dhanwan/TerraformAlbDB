@@ -1,13 +1,10 @@
-module "ec2-private" {
+module "ec2-private-app2" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "4.2.1"
 
-for_each = {
-    "one" = data.terraform_remote_state.vpc.outputs.private_subntes_ids[0],
-    "two" = data.terraform_remote_state.vpc.outputs.private_subntes_ids[1]
-}
+for_each = local.multiple_instance
 
-  name = "web-${each.key}"
+  name = "app2-${each.key}"
 
   ami                    = data.aws_ami.ami.id
   instance_type          = var.instance_type
@@ -16,9 +13,9 @@ for_each = {
   # availability_zone = each.key
 #   monitoring             = true
   vpc_security_group_ids = [ module.sg_pri_http.security_group_id]
-  subnet_id             = each.value
+  subnet_id            = each.value.subnet_id
 
-  user_data = file("${path.module}/apps.sh")
+  user_data = file("${path.module}/app2.sh")
 
   tags = local.common_tags
 
