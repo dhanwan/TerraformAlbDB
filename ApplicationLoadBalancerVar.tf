@@ -1,4 +1,4 @@
-variable "load_balancer_type " {
+variable "load_balancer_type" {
     default = "application"
   
 }
