@@ -32,32 +32,43 @@ module "alb" {
       protocol_version = "HTTP1"
       targets = {
         my_app1 = {
-          target_id = module.ec2-private["one"].id
+          target_id = module.ec2-private-app1["one"].id
           port      = 80
         },
         my_app2 = {
-          target_id = module.ec2-private["two"].id
+          target_id = module.ec2-private-app1["two"].id
           port = 80
         }
       }
       tags = local.common_tags
     }
+
+
+
+
   ]
 
-#   https_listeners = [
-#     {
-#       port               = 443
-#       protocol           = "HTTPS"
-#       certificate_arn    = "arn:aws:iam::123456789012:server-certificate/test_cert-123456789012"
-#       target_group_index = 0
-#     }
-#   ]
+  https_listeners = [
+    {
+      port               = 443
+      protocol           = "HTTPS"
+      certificate_arn    = module.acm.acm_certificate_arn
+      target_group_index = 0
+
+    }
+  ]
 
   http_tcp_listeners = [
     {
       port               = 80
       protocol           = "HTTP"
       target_group_index = 0
+      action_type = "redirect"
+        redirect = {
+          port        = "443"
+          protocol    = "HTTPS"
+          status_code = "HTTP_301"
+      }
     }
   ]
 
