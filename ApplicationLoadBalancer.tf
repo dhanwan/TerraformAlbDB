@@ -127,7 +127,8 @@ module "alb" {
       ]
 
       conditions = [{
-        path_patterns = ["/app1*"]
+        # path_patterns = ["/app1*"]
+        host_headers = [var.app1_dns_name]
       }]
     },
 
@@ -144,7 +145,8 @@ module "alb" {
       ]
 
       conditions = [{
-        path_patterns = ["/app2*"]
+        # path_patterns = ["/app2*"]
+        host_headers = [var.app2_dns_name]
       }]
     }
 

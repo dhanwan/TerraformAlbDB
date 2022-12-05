@@ -1,6 +1,7 @@
 resource "aws_route53_record" "www" {
+  for_each = toset([var.apps_dns_name,var.app1_dns_name, var.app2_dns_name])
   zone_id = data.aws_route53_zone.newzone.zone_id
-  name    = "apps.mynewzone.co"
+  name    = each.key
   type    = "A"
 
   alias {
