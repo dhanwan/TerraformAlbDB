@@ -29,3 +29,8 @@ variable "app2_dns_name" {
     default = "app2.mynewzone.co"
   
 }
+
+variable "home_dns_name" {
+    default = "web.mynewzone.co"
+  
+}
