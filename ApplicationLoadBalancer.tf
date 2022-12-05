@@ -117,6 +117,8 @@ module "alb" {
       # Rule 1 to forward app1 traffic to target group 0
     {
       https_listener_index = 0
+      priority = 1
+    
 
       actions = [
     
@@ -127,13 +129,19 @@ module "alb" {
       ]
 
       conditions = [{
-        path_patterns = ["/app1*"]
+        # path_patterns = ["/app1*"]
+        # host_headers = [var.app1_dns_name]
+          http_headers = [{
+          http_header_name = "app1"
+          values           = ["true"]
+        }]
       }]
     },
 
     # Rule-2 to forward app2 traffic to target group 1
     {
       https_listener_index = 0
+      priority  = 2
 
       actions = [
     
@@ -144,10 +152,67 @@ module "alb" {
       ]
 
       conditions = [{
-        path_patterns = ["/app2*"]
-      }]
-    }
+        # path_patterns = ["/app2*"]
+        # host_headers = [var.app2_dns_name]
+          http_headers = [{
+          http_header_name = "app2"
+          values           = ["true"]
+        }]
 
+      }]
+    },
+
+    # Rule -3 Query Based Routing
+    {
+      https_listener_index = 0
+      priority  = 3
+
+      actions = [
+    
+        {
+          type = "redirect"
+          status_code = "HTTP_302"
+          host        = "www.google.com"
+          path        = "/"
+          query       = ""
+          protocol    = "HTTPS"
+
+        }
+      ]
+
+      conditions = [{
+        query_strings = [{
+          key   = "website"
+          value = "google"
+        }]
+
+      }]
+
+    },
+
+    # Rule4:- When Host Header = web.mynewzone.co
+  {
+      https_listener_index = 0
+      priority  = 4
+
+      actions = [
+    
+        {
+          type = "redirect"
+          status_code = "HTTP_302"
+          host        = "web.ntfinfotech.com"
+          path        = "/ems"
+          query       = ""
+          protocol    = "HTTPS"
+
+        }
+      ]
+
+      conditions = [{
+       host_headers = [var.home_dns_name]
+
+      }]
+  }
 
     ]
 

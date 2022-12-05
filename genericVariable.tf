@@ -18,3 +18,7 @@ variable "domain_name" {
   
 }
 
+variable "apps_dns_name" {
+    default = "apps.mynewzone.co"
+  
+}
