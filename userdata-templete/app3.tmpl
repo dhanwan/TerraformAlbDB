@@ -1,0 +1,11 @@
+#! /bin/bash
+sudo apt-get update
+sudo apt-get install openjdk-11-jdk
+mkdir /home/ubuntu/app3 && cd /home/ubuntu/app3
+wget https://github.com/stacksimplify/temp1/releases/download/1.0.0/usermgmt-webapp.war -P /home/ubuntu/app3
+export DB_HOSTNAME=${rds_db_endpoint}
+export DB_PORT=3306
+export DB_NAME=myzone
+export DB_USERNAME=admin
+export DB_PASSWORD=ntf12345
+java -jar /home/ubuntu/app3/usermgmt-webapp.war > /home/ubuntu/app3/ums-start.log &
